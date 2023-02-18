@@ -39,7 +39,7 @@ class EmbedGenerator {
 
     public CleanTweetText(text: string) {
 
-        let cleanText = text.replace(/http:\/\/t.co\/[a-zA-Z0-9]*/g, "");
+        let cleanText = text.replace(/https:\/\/t.co\/[a-zA-Z0-9]*/g, "");
         return cleanText
 
     }
@@ -60,16 +60,20 @@ export class VideoEmbed extends EmbedGenerator {
 
         let video = this.Data.includes.media[0]
 
-        let VideoURL:any = {}
+        let VideoURL: any = {}
+        let lastBitrate = 0
         // Loop though all the variants and find the one with the highest bitrate that is a video format
         for (let i = 0; i < video.variants.length; i++) {
             if (video.variants[i].content_type === "video/mp4") {
-                VideoURL = video.variants[i]
+                if (video.variants[i].bit_rate > lastBitrate) {
+                    VideoURL = video.variants[i]
+                    lastBitrate = video.variants[i].bit_rate
+                }
             }
         }
 
         this.MetaTags.push(
-            `<meta property="og:description" content="DEEZ NUTS"/>`,
+            `<meta property="twitter:title" content="DEEZ NUTS"/>`,
             `<meta property="og:site_name" content="${this.CleanTweetText(this.Data.data.text)}">`,
             `<meta property="twitter:card" content="player"/>`,
             `<meta property="twitter:player:stream:content_type" content="${VideoURL.content_type}"/>`,
@@ -114,7 +118,7 @@ export class PhotoEmbed extends EmbedGenerator {
         let photo = this.Data.includes.media[0]
 
         this.MetaTags.push(
-            `<meta property="og:description" content="DEEZ NUTS"/>`,
+            `<meta property="twitter:title" content="DEEZ NUTS"/>`,
             `<meta property="og:site_name" content="${this.CleanTweetText(this.Data.data.text)}">`,
             `<meta name="twitter:card" content="summary_large_image" />`,
             `<meta property="twitter:image" content="${photo.url}"/>`,
@@ -123,10 +127,21 @@ export class PhotoEmbed extends EmbedGenerator {
             `<meta property="twitter:image:height" content="${photo.height}"/>`,
         );
 
-        let html = `<!DOCTYPE html>`
-        this.MetaTags.forEach(tag => {
-            html += tag
-        })
+        let html = `
+        <!DOCTYPE html>
+        <html>
+        
+            <head>
+                <title>${this.Data.includes.users[0].name} (@${this.Data.includes.users[0].username})</title>
+                ${this.MetaTags.join("")}
+            </head>
+        
+            <body>
+            </body>
+        
+        </html>`
+
+        return html
 
         return html
 
@@ -145,14 +160,25 @@ export class TextEmbed extends EmbedGenerator {
         this.MetaTags.push(
             `<meta name="twitter:card" content="summary" />`,
             `<meta property="twitter:image" content="0"/>`,
-            `<meta property="og:site_name" content="DEEZ NUTS" />`,
+            `<meta property="twitter:title" content="DEEZ NUTS" />`,
             `<meta property="og:description" content="${this.CleanTweetText(this.Data.data.text)}" />`
         );
 
-        let html = `<!DOCTYPE html>`
-        this.MetaTags.forEach(tag => {
-            html += tag
-        })
+        let html = `
+        <!DOCTYPE html>
+        <html>
+        
+            <head>
+                <title>${this.Data.includes.users[0].name} (@${this.Data.includes.users[0].username})</title>
+                ${this.MetaTags.join("")}
+            </head>
+        
+            <body>
+            </body>
+        
+        </html>`
+
+        return html
 
         return html
 
