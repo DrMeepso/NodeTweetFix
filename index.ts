@@ -1,6 +1,7 @@
 // Twitter Setup
 import { GetTweetById } from "./twitterAPI";
 import { bearerToken } from "./token.json";
+import { VideoEmbed, PhotoEmbed, TextEmbed, findEmbedType } from "./embedGenerator";
 
 // Server Setup
 import express from "express";
@@ -15,19 +16,41 @@ Server.get("/:user/status/:id", (req, res) => {
     let id = req.params.id;
     let user = req.params.user;
 
+    // Check if id is a valid tweet id and its made of numbers 
+    if (id.length !== 19 || isNaN(Number(id))) {
+        res.send("Invalid Tweet ID");
+        return
+    }
+
+
     GetTweetById(id, bearerToken).then((data) => {
         
-        res.send(`
-        
-            <meta property="og:title" content="Tweet by ${user}" />
-            <meta property="og:description" content="${data.data.text}" />
-            <meta property="og:image" content="${data.includes.media[0].url}" />
-            <meta property="og:url" content="https://twitter.com/${user}/status/${id}" />
-            <meta property="og:type" content="website" />
-            <meta property="og:site_name" content="Twitter" />
-            <meta property="og:locale" content="en_US" />
+        console.log(JSON.stringify(data))
+        switch (findEmbedType(data)) {
 
-        `)
+            case "text":
+
+                let Text = new TextEmbed(user, id, data);
+                res.send(Text.GenerateEmbed());
+
+            break
+
+            case "video":
+
+                let Video = new VideoEmbed(user, id, data);
+                res.send(Video.GenerateEmbed());
+
+            break
+
+            case "photo":
+
+                let Photo = new PhotoEmbed(user, id, data);
+                res.send(Photo.GenerateEmbed());
+
+            break
+        
+        }
+
 
 
     })
