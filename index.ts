@@ -25,7 +25,6 @@ Server.get("/:user/status/:id", (req, res) => {
 
     GetTweetById(id, bearerToken).then((data) => {
         
-        console.log(JSON.stringify(data))
         switch (findEmbedType(data)) {
 
             case "text":

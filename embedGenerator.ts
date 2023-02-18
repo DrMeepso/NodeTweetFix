@@ -25,6 +25,8 @@ class EmbedGenerator {
 
         this.MetaTags = [
             `<meta http-equiv="refresh" content="0; url=https://twitter.com/${this.Data.includes.users[0].username}/status/${this.Id}"/>`,
+            `<style>body {background-color: black;}</style>`,
+
             `<meta property="theme-color" content="#ffffff"/>`,
             `<meta property="twitter:site" content="@${this.Data.includes.users[0].username}"/>`,
             `<meta property="twitter:creator" content="@${this.Data.includes.users[0].username}"/>`,
@@ -67,7 +69,7 @@ export class VideoEmbed extends EmbedGenerator {
         }
 
         this.MetaTags.push(
-            `<meta property="og:description" content="DEEZ NUTSSSSSS"/>`,
+            `<meta property="og:description" content="DEEZ NUTS"/>`,
             `<meta property="og:site_name" content="${this.CleanTweetText(this.Data.data.text)}">`,
             `<meta property="twitter:card" content="player"/>`,
             `<meta property="twitter:player:stream:content_type" content="${video.variants[3].content_type}"/>`,
@@ -112,7 +114,7 @@ export class PhotoEmbed extends EmbedGenerator {
         let photo = this.Data.includes.media[0]
 
         this.MetaTags.push(
-            `<meta property="og:description" content="DEEZ NUTSSSSSS"/>`,
+            `<meta property="og:description" content="DEEZ NUTS"/>`,
             `<meta property="og:site_name" content="${this.CleanTweetText(this.Data.data.text)}">`,
             `<meta name="twitter:card" content="summary_large_image" />`,
             `<meta property="twitter:image" content="${photo.url}"/>`,
