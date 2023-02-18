@@ -27,7 +27,7 @@ class EmbedGenerator {
             `<meta http-equiv="refresh" content="0; url=https://twitter.com/${this.Data.includes.users[0].username}/status/${this.Id}"/>`,
             `<style>body {background-color: black;}</style>`,
 
-            `<meta property="theme-color" content="#ffffff"/>`,
+            `<meta property="theme-color" content="#e872e2"/>`,
             `<meta property="twitter:site" content="@${this.Data.includes.users[0].username}"/>`,
             `<meta property="twitter:creator" content="@${this.Data.includes.users[0].username}"/>`,
             `<meta property="twitter:title" content="${this.Data.includes.users[0].name} (@${this.Data.includes.users[0].username})"/>`,
@@ -72,7 +72,7 @@ export class VideoEmbed extends EmbedGenerator {
             `<meta property="og:description" content="DEEZ NUTS"/>`,
             `<meta property="og:site_name" content="${this.CleanTweetText(this.Data.data.text)}">`,
             `<meta property="twitter:card" content="player"/>`,
-            `<meta property="twitter:player:stream:content_type" content="${video.variants[3].content_type}"/>`,
+            `<meta property="twitter:player:stream:content_type" content="${VideoURL.content_type}"/>`,
             `<meta property="twitter:player:height" content="${video.height}"/>`,
             `<meta property="twitter:player:width" content="${video.width}"/>`,
             `<meta property="og:video" content="${VideoURL.url}"/>`,

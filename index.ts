@@ -18,7 +18,7 @@ Server.get("/:user/status/:id", (req, res) => {
 
     // Check if id is a valid tweet id and its made of numbers 
     if (id.length !== 19 || isNaN(Number(id))) {
-        res.send("Invalid Tweet ID");
+        res.send(`<meta property="og:description" content="Cant find a video with a id of ${id}!"/>`);
         return
     }
 
