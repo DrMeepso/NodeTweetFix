@@ -1,10 +1,17 @@
-export function findEmbedType(data: any) {
+export function findEmbedType(data: any, mediaIndex:number) {
+
+    mediaIndex = mediaIndex
 
     if (!data.includes.media) {
         return "text"
-    } else if (data.includes.media[0].type === "photo") {
+    } 
+    
+    if (mediaIndex > data.includes.media.length-1) {
+        return "errorNullMedia"
+    }
+    if (data.includes.media[mediaIndex].type === "photo") {
         return "photo"
-    } else if (data.includes.media[0].type === "video" || data.includes.media[0].type === "animated_gif") {
+    } else if (data.includes.media[mediaIndex].type === "video" || data.includes.media[mediaIndex].type === "animated_gif") {
         return "video"
     }
 
@@ -15,13 +22,15 @@ class EmbedGenerator {
     public User: string;
     public Id: string;
     public Data: any;
+    public mediaIndex: number;
 
     public MetaTags: string[];
 
-    constructor(user: string, id: string, data: any) {
+    constructor(user: string, id: string, data: any, mediaIndex:number = 0) {
         this.User = user;
         this.Id = id;
         this.Data = data;
+        this.mediaIndex = mediaIndex;
 
         this.MetaTags = [
             `<meta http-equiv="refresh" content="0; url=https://twitter.com/${this.Data.includes.users[0].username}/status/${this.Id}"/>`,
@@ -52,13 +61,13 @@ class EmbedGenerator {
 
 export class VideoEmbed extends EmbedGenerator {
 
-    constructor(user: string, id: string, data: any) {
-        super(user, id, data);
+    constructor(user: string, id: string, data: any, mediaIndex:number) {
+        super(user, id, data, mediaIndex);
     }
 
     public GenerateEmbed() {
 
-        let video = this.Data.includes.media[0]
+        let video = this.Data.includes.media[this.mediaIndex]
 
         let VideoURL: any = {}
         let lastBitrate = 0
@@ -109,13 +118,13 @@ export class VideoEmbed extends EmbedGenerator {
 
 export class PhotoEmbed extends EmbedGenerator {
 
-    constructor(user: string, id: string, data: any) {
-        super(user, id, data);
+    constructor(user: string, id: string, data: any, mediaIndex:number) {
+        super(user, id, data, mediaIndex);
     }
 
     public GenerateEmbed() {
 
-        let photo = this.Data.includes.media[0]
+        let photo = this.Data.includes.media[this.mediaIndex]
 
         this.MetaTags.push(
             `<meta property="twitter:title" content="DEEZ NUTS"/>`,
@@ -142,17 +151,14 @@ export class PhotoEmbed extends EmbedGenerator {
         </html>`
 
         return html
-
-        return html
-
     }
 
 }
 
 export class TextEmbed extends EmbedGenerator {
 
-    constructor(user: string, id: string, data: any) {
-        super(user, id, data);
+    constructor(user: string, id: string, data: any, mediaIndex:number) {
+        super(user, id, data, mediaIndex);
     }
 
     public GenerateEmbed() {
@@ -179,9 +185,6 @@ export class TextEmbed extends EmbedGenerator {
         </html>`
 
         return html
-
-        return html
-
     }
 
 }
