@@ -1,12 +1,13 @@
 // Twitter Setup
 import { GetTweetById } from "./twitterAPI";
-import { bearerToken } from "./token.json";
 import { VideoEmbed, PhotoEmbed, TextEmbed, findEmbedType } from "./embedGenerator";
+
+const twitterToken = process.argv[3] || require("./token.json").bearerToken;
 
 // Server Setup
 import express from "express";
 import cors from "cors";
-let Port = 3000;
+let Port = process.argv[2] ? parseInt(process.argv[2]) : 3000;
 let Server = express();
 Server.use(cors());
 
@@ -27,7 +28,7 @@ function HandelRequest(req: any, res: any){
     }
 
 
-    GetTweetById(id, bearerToken).then((data) => {
+    GetTweetById(id, twitterToken).then((data) => {
         
         switch (findEmbedType(data, mediaID)) {
 
