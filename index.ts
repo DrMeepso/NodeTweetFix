@@ -66,6 +66,28 @@ function HandelRequest(req: any, res: any){
     })
 }
 
+
+Server.get(`/`, (req, res) => {
+
+    res.send(`
+    <meta http-equiv="refresh" content="0; url=https://github.com/DrMeepso/NodeTweetFix/">
+    <meta property="og:description" content="Hello! 😺"/> <meta property="theme-color" content="#e872e2"/>
+    hi :
+    `);
+    
+
+})
+
+// your welcome Daniel
+Server.get(`/gay`, (req, res) => {
+
+    GetTweetById(`1629538776111280130`, twitterToken).then((data) => {
+        let Photo = new PhotoEmbed("balls", "1629538776111280130", data, 0);
+        res.send(Photo.GenerateEmbed());
+    })
+
+})
+
 Server.listen(Port, () => {
     console.log(`Server is listening on port ${Port}`);
 })
